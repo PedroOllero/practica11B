@@ -4,13 +4,21 @@ const filtrar = (codigo: string) => {
   const reg1 = /<img src=(?<urlImagen>.*) \/>/gm;
 
   const coincidencias = codigo.match(reg1);
-
+  
 
   if (coincidencias) {
     console.log("hay IMG", coincidencias);
     const arrayIMG: string[] = [...coincidencias]
-    arrayIMG.map((elemento) => imprimirInfo(elemento))
-    
+    arrayIMG.map((elemento) => {
+      const reg2 = /<img src=(?<urlImagen>.*) \/>/;
+      const sacarImagen = reg2.exec(elemento)
+      if(sacarImagen){
+        const urlImagen = sacarImagen.groups?.urlImagen;
+        if (urlImagen) {
+          imprimirInfo(urlImagen);
+        }
+      }
+    })
   } else {
     console.log("no hay IMG", coincidencias);
   }
