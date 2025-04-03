@@ -1,16 +1,15 @@
 let codigo: string = "";
 
 const filtrar = (codigo: string) => {
-  const reg1 = /<img src=(?<urlImagen>.*) \/>/gm;
+  const reg1 = /<img src=(.*) \/>/gm;
 
   const coincidencias = codigo.match(reg1);
   
-
   if (coincidencias) {
     console.log("hay IMG", coincidencias);
     const arrayIMG: string[] = [...coincidencias]
     arrayIMG.map((elemento) => {
-      const reg2 = /<img src=(?<urlImagen>.*) \/>/;
+      const reg2 = /<img src=["](?<urlImagen>.*)["] \/>/;
       const sacarImagen = reg2.exec(elemento)
       if(sacarImagen){
         const urlImagen = sacarImagen.groups?.urlImagen;
@@ -53,11 +52,20 @@ const imprimirParrafo = (texto: string): HTMLParagraphElement => {
   return crearTexto;
 };
 
+const imprimirImagen = (texto: string) => {
+  const crearImagen = document.createElement("img");
+  crearImagen.src = `${texto}`
+
+  return crearImagen;
+}
+
 const imprimirInfo = (texto: string) => {
   const contenedor = document.getElementById("resultado");
   if (contenedor && contenedor instanceof HTMLDivElement) {
-    const esCorrecto = imprimirParrafo(texto);
-    contenedor.appendChild(esCorrecto);
+    const impParrafo = imprimirParrafo(texto);
+    contenedor.appendChild(impParrafo);
+    const impImg = imprimirImagen(texto);
+    contenedor.appendChild(impImg);
   }
 };
 
